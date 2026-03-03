@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "acmeeh-admin"
 version = "1.0.0"
 description = "Python client library and CLI for the ACMEEH Admin API"
+readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 dependencies = [
