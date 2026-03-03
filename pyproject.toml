@@ -9,6 +9,22 @@ description = "Python client library and CLI for the ACMEEH Admin API"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
+authors = [
+    { name = "miichoow" },
+]
+keywords = ["acme", "pki", "certificates", "tls", "rfc8555", "admin", "cli"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: System :: Networking",
+]
 dependencies = [
     "requests>=2.28,<3",
     "click>=8.1,<9",
@@ -23,6 +39,11 @@ dev = [
     "mypy>=1.8",
     "types-requests>=2.28",
 ]
+
+[project.urls]
+Homepage = "https://github.com/miichoow/ACMEEH-admin"
+Repository = "https://github.com/miichoow/ACMEEH-admin"
+Issues = "https://github.com/miichoow/ACMEEH-admin/issues"
 
 [project.scripts]
 acmeeh-admin = "acmeeh_admin.cli.main:cli"
