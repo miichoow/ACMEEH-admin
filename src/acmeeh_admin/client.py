@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from acmeeh_admin._http import HttpSession
+from acmeeh_admin.resources.accounts import AccountsResource
 from acmeeh_admin.resources.audit import AuditResource
 from acmeeh_admin.resources.auth import AuthResource
 from acmeeh_admin.resources.certificates import CertificatesResource
@@ -50,6 +51,7 @@ class AcmeehAdminClient:
         )
         self._auth = AuthResource(self._http)
         self.users = UsersResource(self._http)
+        self.accounts = AccountsResource(self._http)
         self.audit = AuditResource(self._http)
         self.eab = EabResource(self._http)
         self.identifiers = IdentifiersResource(self._http)

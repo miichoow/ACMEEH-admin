@@ -155,6 +155,15 @@ The client exposes the following resource objects, each mapping to a group of Ad
 | `me() -> dict`                                    | Get the current (authenticated) user's profile.                        |
 | `reset_password() -> dict`                        | Reset the current user's password. Response includes the new password. |
 
+#### `client.accounts` — ACME Account Inspection (read-only)
+
+| Method                                                                                                                              | Description                                                                                                            |
+|-------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `list(*, status, eab_only, eab_kid, contact, created_before, created_after, limit, offset) -> list[dict]`                           | List ACME accounts with optional filters. `status` is one of `valid`, `deactivated`, `revoked`. Dates are ISO 8601.    |
+| `get(account_id) -> dict`                                                                                                           | Get a single ACME account by ID, including contacts, EAB kid, and assigned CSR profile (if any).                       |
+
+> Auditor-role tokens receive a redacted view (no full JWK, only the thumbprint).
+
 #### `client.audit` — Audit Log
 
 | Method                                                                | Description                                                                    |
@@ -409,6 +418,19 @@ acmeeh-admin users delete <USER_ID>              # Delete user (with confirmatio
 acmeeh-admin users delete <USER_ID> --yes        # Delete without confirmation (scripting)
 acmeeh-admin users me                            # Current user's profile
 acmeeh-admin users reset-password                # Reset current user's password
+```
+
+#### `accounts` — ACME Account Inspection
+
+```bash
+acmeeh-admin accounts list                                  # List ACME accounts
+acmeeh-admin accounts list --status valid                   # Filter by status
+acmeeh-admin accounts list --eab-only --eab-kid web-prod-01 # Only EAB-bound, by kid
+acmeeh-admin accounts list --contact mailto:ops@example.com # Filter by contact substring
+acmeeh-admin accounts list --created-after 2026-01-01       # Created on/after date
+acmeeh-admin accounts list --created-before 2026-04-01      # Created before date
+acmeeh-admin accounts list --limit 50 --offset 0            # Paginate results
+acmeeh-admin accounts get <ACCOUNT_ID>                      # Get a single account
 ```
 
 #### `audit` — Audit Log
@@ -832,6 +854,7 @@ acmeeh_admin/
     _base.py             # BaseResource — shared base for all resource classes
     auth.py              # AuthResource — login/logout
     users.py             # UsersResource — admin user CRUD
+    accounts.py          # AccountsResource — ACME account inspection
     audit.py             # AuditResource — audit log queries and export
     eab.py               # EabResource — EAB credential management
     identifiers.py       # IdentifiersResource — allowed identifier management
@@ -847,6 +870,7 @@ acmeeh_admin/
     _helpers.py          # pass_client, handle_errors decorators
     auth.py              # login/logout commands
     users.py             # users command group
+    accounts.py          # accounts command group
     audit.py             # audit command group
     eab.py               # eab command group
     identifiers.py       # identifiers command group
@@ -888,6 +912,13 @@ The following table lists every REST endpoint the library wraps. All paths are r
 | DELETE | `/users/{id}`        | `client.users.delete()`        | `users delete`               |
 | GET    | `/me`                | `client.users.me()`            | `users me`                   |
 | POST   | `/me/reset-password` | `client.users.reset_password()`| `users reset-password`       |
+
+### ACME Accounts
+
+| Method | Path                  | Library Method            | CLI Command      |
+|--------|-----------------------|---------------------------|------------------|
+| GET    | `/accounts`           | `client.accounts.list()`  | `accounts list`  |
+| GET    | `/accounts/{id}`      | `client.accounts.get()`   | `accounts get`   |
 
 ### Audit Log
 
@@ -996,6 +1027,7 @@ tests/
   resources/
     test_auth.py                # Login/logout token handling
     test_users.py               # Admin user CRUD
+    test_accounts.py            # ACME account list and get
     test_audit.py               # Audit log listing and export
     test_audit_extended.py      # Audit list_all pagination and export filters
     test_eab.py                 # EAB credential management
@@ -1015,6 +1047,7 @@ tests/
     test_output.py              # Table and JSON formatting
     test_auth.py                # login/logout commands
     test_users.py               # users command group
+    test_accounts.py            # accounts command group
     test_audit.py               # audit command group
     test_eab.py                 # eab command group
     test_identifiers.py         # identifiers command group

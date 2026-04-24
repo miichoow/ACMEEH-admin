@@ -25,6 +25,7 @@ class TestCliGroup:
             "login",
             "logout",
             "users",
+            "accounts",
             "audit",
             "eab",
             "identifiers",

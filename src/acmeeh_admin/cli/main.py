@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import click
 
+from acmeeh_admin.cli.accounts import accounts
 from acmeeh_admin.cli.audit import audit
 from acmeeh_admin.cli.auth import login, logout
 from acmeeh_admin.cli.certificates import certificates
@@ -51,6 +52,7 @@ cli.add_command(logout)
 
 # Subgroups
 cli.add_command(users)
+cli.add_command(accounts)
 cli.add_command(audit)
 cli.add_command(eab)
 cli.add_command(identifiers)
