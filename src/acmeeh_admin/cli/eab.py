@@ -37,6 +37,9 @@ def list_eab(ctx, client: AcmeehAdminClient):
 def create(ctx, client: AcmeehAdminClient, kid: str, label: str):
     """Create an EAB credential."""
     data = client.eab.create(kid, label)
+    # account_id is only populated once an ACME account consumes the credential.
+    if isinstance(data, dict):
+        data.pop("account_id", None)
     output(data, get_format(ctx))
 
 
